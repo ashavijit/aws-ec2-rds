@@ -69,7 +69,7 @@ resource "null_resource" "configweb12" {
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("/home/avijit69/Desktop/Projects/Terraform/admin.pem")
+    private_key = file("/home/avijit69/Desktop/Projects/Terraform/.ssh/avijit.pem")
     host        = aws_instance.wordpressfrontend.public_ip
   }
 
@@ -94,6 +94,7 @@ resource "null_resource" "configphp" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum install -y amazon-linux-extras",
+      "sudo yum -y install httpd php",
       "sudo amazon-linux-extras enable php7.2",
       "sudo yum clean metadata -y",
       "sudo yum install php-cli php-pdo php-fpm php-json php-mysqlnd -y",
@@ -130,6 +131,28 @@ resource "null_resource" "configdocker" {
     ]
   }
 }
+resource "null_resource" "configphpmyadmin" {
+  connection {
+    type        = "ssh"
+    user        = "ec2-user"
+    private_key = file("/home/avijit69/Desktop/Projects/Terraform/.ssh/avijit.pem")
+    host        = aws_instance.wordpressfrontend.public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum install -y phpMyAdmin",
+      "sudo sed -i 's/Require ip 127.0.0.1/Require all granted/g' /etc/httpd/conf.d/phpMyAdmin.conf",
+      "sudo systemctl restart httpd"
+    ]
+  }
+}
+
+output "phpMyAdminURL" {
+  value       = "http://${aws_eip.wpip.public_ip}:8080/phpMyAdmin"
+  description = "URL for the phpMyAdmin site"
+}
+
 
 resource "aws_eip_association" "wpip_assoc" {
   instance_id   = aws_instance.wordpressfrontend.id
@@ -155,5 +178,3 @@ output "WordpressURL" {
   value       = "http://${aws_eip.wpip.public_ip}/"
   description = "URL for the deployed Wordpress site"
 }
-
-
