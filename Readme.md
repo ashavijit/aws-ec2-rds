@@ -51,4 +51,18 @@ DatabaseUserName = "admin"
 WebServerIP = "44.236.230.123"
 
 ```
+### Milestone Achieved
+
+- Create an EC2 instance t4g.small and one RDS instance t4g.micro.
+- The RDS instance should not be publicly accessible and should only be exposed to the EC2 instance.
+- The script should also perform deployment and take the latest image of WordPress from Docker.
+- The WordPress application should be exposed on port 80.
+- Create an Elastic IP and attach it to the EC2 instance
+
+### Working Now
+
+- Add phpmyadmin in deployment on same instance, so that one can access Database.
+
+
+
 
