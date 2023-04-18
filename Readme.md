@@ -58,10 +58,11 @@ WebServerIP = "44.236.230.123"
 - The script should also perform deployment and take the latest image of WordPress from Docker.
 - The WordPress application should be exposed on port 80.
 - Create an Elastic IP and attach it to the EC2 instance
+- Add phpmyadmin in deployment on same instance, so that one can access Database.
 
 ### Working Now
 
-- Add phpmyadmin in deployment on same instance, so that one can access Database.
+- Add phpmyadmin in deployment on same instance, so that one can access Database.[Done]
 
 
 
